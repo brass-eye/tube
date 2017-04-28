@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import Search from './Search';
+import Table from './Table';
 
 class App extends Component {
 
@@ -20,9 +21,14 @@ class App extends Component {
       })
 
     this.state = {
-      returnedValue : {
-        joke: "yo mama fat"
-      }
+      visits: [{
+        name: "Liverpool Street",
+        visit_count: 10
+      }, {
+        name: "Bank",
+        visit_count: 5
+      }],
+      total_visits: 15
     }
   }
 
@@ -31,7 +37,8 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Search value={this.state.returnedValue.joke} />
+        <Search/>
+        <Table visits={this.state.visits} />
       </div>
     );
   }
