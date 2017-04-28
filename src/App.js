@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
+import Search from './Search';
 
 class App extends Component {
 
@@ -30,7 +31,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <p>{this.state.returnedValue.joke}</p> 
+        <Search value={this.state.returnedValue.joke} />
       </div>
     );
   }
