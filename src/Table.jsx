@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default class Table extends React.PureComponent {
+export default class Table extends React.Component {
 	render(){
 		return (<table>
 			<thead>
@@ -10,10 +10,10 @@ export default class Table extends React.PureComponent {
 				</tr>
 			</thead>
 			<tbody>
-					{this.props.visits.map( (visit, key) => {
+					{Object.keys(this.props.visits).map( (station, key) => {
 						return (<tr key={key}>
-											<td>{visit.name}</td>
-											<td>{visit.visit_count}</td>
+											<td>{this.props.visits[station].name}</td>
+											<td>{this.props.visits[station].visit_count}</td>
 										</tr>);
 					})}
 			</tbody>

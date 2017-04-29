@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import Search from './Search';
 import Table from './Table';
 import AddVisit from './AddVisit';
+import TubeData from './tfl-tube-data.json'
 
 class App extends Component {
 
@@ -16,17 +17,17 @@ class App extends Component {
           return response.json()
         })
       .then(json => {
-        self.setState(json);
+        // self.setState(json);
       })
 
     this.state = {
-      visits: [{
+      visits: { LST: {
         name: "Liverpool Street",
         visit_count: 10
-      }, {
+      }, BNK: {
         name: "Bank",
         visit_count: 5
-      }],
+      }},
       total_visits: 15
     }
 
@@ -36,13 +37,18 @@ class App extends Component {
 
   handleSubmit(event) {
     console.log('tried to submit: ' + this.state.selected_station);
+    var visits = this.state.visits;
+    var selected_station = this.state.selected_station;
+    visits[selected_station].visit_count++;
+    this.setState({
+      ...this.state,
+      visits
+    });
     event.preventDefault();
   }
 
   handleChange(event) {
-    this.setState({
-      ...this.state,
-      selected_station: event.target.value});
+    this.state.selected_station = event.target.value;
   }
 
   render() {
