@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
+import React from 'react';
 
-export default class Table extends Component {
+export default class Table extends React.PureComponent {
 	render(){
 		return (<table>
 			<thead>

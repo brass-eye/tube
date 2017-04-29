@@ -1,12 +1,11 @@
-import React, {Component} from 'react';
+import React from 'react';
 import TubeData from './tfl-tube-data.json'
 
-export default class AddVisit extends Component {
-
+export default class AddVisit extends React.PureComponent {
 	render() {
 		return (
-			<form>
-				<select>
+			<form onSubmit={this.props.onSubmit}>
+				<select onChange={this.props.onChange}>
 					{
 						Object.keys(TubeData.stations).map( (stop, key) => {
 							 return <option key={key}
@@ -16,6 +15,7 @@ export default class AddVisit extends Component {
 						})
 					}
 				</select>
+				<input type='submit' />
 			</form>
 			)
 	}
