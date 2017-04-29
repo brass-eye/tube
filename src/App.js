@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import './App.css';
+// import './App.css';
 import Search from './Search';
 import Table from './Table';
+import AddVisit from './AddVisit';
 
 class App extends Component {
 
@@ -10,14 +11,12 @@ class App extends Component {
 
     let self = this;
 
-    fetch("http://api.yomomma.info/", {method: 'get'})
+    fetch("http://localhost:4567/visits", {method: 'get'})
       .then(response => {
           return response.json()
         })
       .then(json => {
-        self.setState({
-          returnedValue: json
-        });
+        self.setState(json);
       })
 
     this.state = {
@@ -39,6 +38,7 @@ class App extends Component {
       <div className="App">
         <Search/>
         <Table visits={this.state.visits} />
+        <AddVisit />
       </div>
     );
   }
