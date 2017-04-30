@@ -3,23 +3,11 @@ import React, { Component } from 'react';
 import Search from './Search';
 import Table from './Table';
 import AddVisit from './AddVisit';
-import TubeData from './tfl-tube-data.json'
 
 class App extends Component {
 
   constructor() {
     super();
-
-    let self = this;
-
-    fetch("http://localhost:4567/visits", {method: 'get'})
-      .then(response => {
-          return response.json()
-        })
-      .then(json => {
-        // self.setState(json);
-      })
-
     this.state = {
       visits: { LST: {
         name: "Liverpool Street",
@@ -35,20 +23,31 @@ class App extends Component {
     this.handleChange  = this.handleChange.bind(this);
   }
 
+  componentDidMount(){
+    fetch("http://localhost:4567/visits", {method: 'get'})
+      .then(response => {
+          return response.json()
+        })
+      .then(json => {
+        this.setState(json);
+      })
+  }
+
   handleSubmit(event) {
     console.log('tried to submit: ' + this.state.selected_station);
     var visits = this.state.visits;
     var selected_station = this.state.selected_station;
     visits[selected_station].visit_count++;
     this.setState({
-      ...this.state,
       visits
     });
     event.preventDefault();
   }
 
   handleChange(event) {
-    this.state.selected_station = event.target.value;
+    this.setState({
+      selected_station: event.target.value
+    })
   }
 
   render() {
