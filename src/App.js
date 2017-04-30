@@ -3,20 +3,14 @@ import React, { Component } from 'react';
 import Search from './Search';
 import Table from './Table';
 import AddVisit from './AddVisit';
+import TubeData from './tfl-tube-data.json'
 
 class App extends Component {
 
   constructor() {
     super();
     this.state = {
-      visits: { LST: {
-        name: "Liverpool Street",
-        visit_count: 10
-      }, BNK: {
-        name: "Bank",
-        visit_count: 5
-      }},
-      total_visits: 15
+      visits: {}
     }
 
     this.handleSubmit  = this.handleSubmit.bind(this);
@@ -34,13 +28,24 @@ class App extends Component {
   }
 
   handleSubmit(event) {
-    console.log('tried to submit: ' + this.state.selected_station);
-    var visits = this.state.visits;
     var selected_station = this.state.selected_station;
-    visits[selected_station].visit_count++;
-    this.setState({
-      visits
-    });
+    var visits = this.state.visits;
+
+    if (visits[selected_station]){
+      visits[selected_station].visit_count++;
+      this.setState({
+        visits
+      });
+    } else {
+      this.setState({
+        visits: {
+          ...visits,
+          [selected_station]:{
+            name: TubeData.stations[selected_station],
+            visit_count: 1
+          }
+      }});
+    }
     event.preventDefault();
   }
 
