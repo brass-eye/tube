@@ -2,6 +2,15 @@ import React from 'react';
 import TubeData from './tfl-tube-data.json'
 
 export default class AddVisit extends React.PureComponent {
+	constructor() {
+		super();
+
+		this.state = {
+			value: Object.keys(TubeData.stations)[0] 
+		};
+	}
+
+
 	render() {
 		return (
 			<form onSubmit={this.props.onSubmit}>
