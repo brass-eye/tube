@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 // import './App.css';
-import Search from './Search';
+// import Search from './Search';
 import Table from './Table';
 import AddVisit from './AddVisit';
 import TubeData from './tfl-tube-data.json'
@@ -46,6 +46,13 @@ class App extends Component {
           }
       }});
     }
+
+    fetch("http://localhost:4567/visits", {
+      method: 'POST',
+      body: JSON.stringify({ selected_station: selected_station} )
+    })
+
+
     event.preventDefault();
   }
 
@@ -58,9 +65,8 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Search/>
-        <Table visits={this.state.visits} />
         <AddVisit onSubmit={this.handleSubmit} onChange={this.handleChange}/>
+        <Table visits={this.state.visits} />
       </div>
     );
   }
