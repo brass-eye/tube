@@ -10,11 +10,14 @@ export default class Table extends React.Component {
 				</tr>
 			</thead>
 			<tbody>
-					{Object.keys(this.props.visits).map( (station, key) => {
-						return (<tr key={key}>
-											<td>{this.props.visits[station].name}</td>
-											<td>{this.props.visits[station].visit_count}</td>
-										</tr>);
+					{this.props.visits.map( (station, key) => {
+						debugger;
+						if (station.visits.length){
+							return (<tr key={key}>
+												<td>{station.name}</td>
+												<td>{station.visits.length}</td>
+											</tr>);
+						}
 					})}
 			</tbody>
 		</table>);

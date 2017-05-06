@@ -10,49 +10,55 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      visits: {}
+      stations: []
     }
 
-    this.handleSubmit  = this.handleSubmit.bind(this);
+    this.handleAddVisit  = this.handleAddVisit.bind(this);
     this.handleChange  = this.handleChange.bind(this);
   }
 
   componentDidMount(){
-    fetch("http://localhost:4567/visits", {method: 'get'})
+    fetch("http://localhost:3000/stations", {method: 'get'})
       .then(response => {
           return response.json()
         })
       .then(json => {
-        this.setState(json);
+        this.setState({stations: json});
       })
+    
   }
 
-  handleSubmit(event) {
+  handleAddVisit(event) {
     var selected_station = this.state.selected_station;
-    var visits = this.state.visits;
+    var stations = this.state.stations;
+    var visit_date = new Date();
+    var visited_station = stations.find(x => x.id == selected_station)
 
-    if (visits[selected_station]){
-      visits[selected_station].visit_count++;
-      this.setState({
-        visits
-      });
-    } else {
-      this.setState({
-        visits: {
-          ...visits,
-          [selected_station]:{
-            name: TubeData.stations[selected_station],
-            visit_count: 1
-          }
-      }});
-    }
+    visited_station.visits.push({
+      visit_date: visit_date
+    });
 
-    fetch("http://localhost:4567/visits", {
+    this.setState({
+      visited_stations: {
+        ...stations,
+        visited_station
+    }});
+
+    var payload = { 
+      visit: { 
+        station_id: selected_station,
+        visit_date: visit_date
+      }
+    };
+
+    fetch("http://localhost:3000/visits", {
       method: 'POST',
-      body: JSON.stringify({ selected_station: selected_station} )
-    })
-
-
+      headers: {
+        'Accept': 'application/json, text/plain, */*',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    });
     event.preventDefault();
   }
 
@@ -65,8 +71,8 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <AddVisit onSubmit={this.handleSubmit} onChange={this.handleChange}/>
-        <Table visits={this.state.visits} />
+        <AddVisit onSubmit={this.handleAddVisit} onChange={this.handleChange}/>
+        <Table visits={this.state.stations} />
       </div>
     );
   }
