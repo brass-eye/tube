@@ -8,7 +8,7 @@ class App extends Component {
     super();
 
     this.state = {
-      returnedValue = {
+      returnedValue: {
         joke: "yo mama fat"
       };
     }

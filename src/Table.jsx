@@ -1,25 +1,33 @@
 import React from 'react';
 
-export default class Table extends React.Component {
-	render(){
-		return (<table>
-			<thead>
-				<tr>
-					<th>Station</th>
-					<th>Visits</th>
-				</tr>
-			</thead>
-			<tbody>
-					{this.props.visits.map( (station, key) => {
-						debugger;
-						if (station.visits.length){
-							return (<tr key={key}>
-												<td>{station.name}</td>
-												<td>{station.visits.length}</td>
-											</tr>);
-						}
-					})}
-			</tbody>
-		</table>);
-	}
+const Table = ({visits}) => {
+  return (
+    <table>
+      <thead>
+      <tr>
+        <th>Station</th>
+        <th>Visits</th>
+      </tr>
+      </thead>
+      <tbody>
+        {
+         Object.keys(visits).map((station_code, key) => {
+            const visit = visits[station_code];
+            if (visit.visits.length) {
+              return (
+                <tr key={station_code}>
+                  <td>{visit.name}</td>
+                  <td>{visit.length}</td>
+                </tr>
+              );
+            } else {
+              return <div></div>
+            }
+          })
+        }
+      </tbody>
+    </table>
+  );
 }
+
+export default Table;
