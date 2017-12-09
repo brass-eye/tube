@@ -1,65 +1,71 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 // import './App.css';
 // import Search from './Search';
 import Table from './Table';
 import AddVisit from './AddVisit';
-import TubeData from './tfl-tube-data.json'
+import stationList from './tfl-tube-data.json'
 
 class App extends Component {
 
   constructor() {
     super();
-    this.state = {
-      stations: []
-    }
+    const date = new Date();
 
-    this.handleAddVisit  = this.handleAddVisit.bind(this);
-    this.handleChange  = this.handleChange.bind(this);
+    const stations = Object.keys(stationList).reduce((acc, v, i) => {
+      const station = {name: stationList[v], visits: []} ;
+      acc[v] = station
+      return acc;
+    }, {})
+
+    this.state = {
+      visited_stations: {
+        "BST": {
+          name: "Baker Street",
+          visits: [
+            date
+          ],
+        }  
+      },
+      stations,
+      selected_station: {station_code: "BST" }
+    };
+
+    this.handleAddVisit = this.handleAddVisit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+
+
+
   }
 
-  componentDidMount(){
-    fetch("http://localhost:3000/stations", {method: 'get'})
+/*  componentDidMount() {
+    fetch('http://localhost:3000/stations', {method: 'get'})
       .then(response => {
-          return response.json()
-        })
+        return response.json()
+      })
       .then(json => {
         this.setState({stations: json});
       })
-    
+
   }
+*/
+
 
   handleAddVisit(event) {
-    var selected_station = this.state.selected_station;
-    var stations = this.state.stations;
-    var visit_date = new Date();
-    var visited_station = stations.find(x => x.id == selected_station)
-
-    visited_station.visits.push({
-      visit_date: visit_date
-    });
-
-    this.setState({
-      visited_stations: {
-        ...stations,
-        visited_station
-    }});
-
-    var payload = { 
-      visit: { 
-        station_id: selected_station,
-        visit_date: visit_date
-      }
-    };
-
-    fetch("http://localhost:3000/visits", {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json, text/plain, */*',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(payload)
-    });
     event.preventDefault();
+    const {visited_stations, selected_station, stations} = this.state;
+    const visit_date = new Date();
+    const previous_visits  = visited_stations[selected_station] || stations[selected_station]
+    
+    previous_visits.visits.push(new Date());
+
+    const state = {
+      visited_stations: {
+        ...visited_stations,
+        [selected_station]: previous_visits
+      }
+    }
+
+    this.setState(state);
   }
 
   handleChange(event) {
@@ -71,8 +77,12 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <AddVisit onSubmit={this.handleAddVisit} onChange={this.handleChange}/>
-        <Table visits={this.state.stations} />
+        <AddVisit stations={stationList} 
+                  onSubmit={ this.handleAddVisit } 
+                  onChange={ this.handleChange }  
+                  selected_station={this.state.selected_station}/>
+
+        <Table visits={this.state.visited_stations}/>
       </div>
     );
   }

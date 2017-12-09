@@ -1,43 +1,22 @@
 import React from 'react';
 
-export default class AddVisit extends React.PureComponent {
-	constructor() {
-		super();
+const AddVisit = ({selected_station, stations, onSubmit, onChange}) => {
+  return (
+    <form onSubmit={onSubmit}>
+      <select onChange={onChange}>
+        {
+          Object.keys(stations).map((stop_code, key) => {
+            return (
+                <option key={key}
+                        value={stop_code}>
+                        {stations[stop_code]}
+              </option>
+            )})
+        }
+      </select>
+      <input type='submit'/>
+    </form>
+  );
+};
 
-		this.state = {stations: []};
-	}
-
-	componentDidMount(){
-    fetch("http://localhost:3000/stations", {method: 'get'})
-      .then(response => {
-          return response.json()
-        })
-      .then(json => {
-      	this.setState({
-      		stations: json,
-      		value: 1,
-      	});
-      })
-	}
-
-
-	render() {
-		return (
-			<form onSubmit={this.props.onSubmit}>
-				<select onChange={this.props.onChange}>
-					{
-						this.state.stations.map( (stop, key) => {
-							 return <option key={key}
-							 								value={stop.id}>
-							 								{stop.name}
-							 				</option>;
-						})
-					}
-				</select>
-				<input type='submit' />
-			</form>
-			)
-	}
-
-
-}
+export default AddVisit
