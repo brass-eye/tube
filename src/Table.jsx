@@ -17,7 +17,7 @@ const Table = ({visits}) => {
               return (
                 <tr key={station_code}>
                   <td>{visit.name}</td>
-                  <td>{visit.length}</td>
+                  <td>{visit.visits.length}</td>
                 </tr>
               );
             } else {
