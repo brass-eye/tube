@@ -1,4 +1,5 @@
 import React from 'react';
+import TableRow from './TableRow'
 
 const Table = ({visits}) => {
   return (
@@ -15,13 +16,10 @@ const Table = ({visits}) => {
             const visit = visits[station_code];
             if (visit.visits.length) {
               return (
-                <tr key={station_code}>
-                  <td>{visit.name}</td>
-                  <td>{visit.visits.length}</td>
-                </tr>
+                <TableRow key={key} stationVisits={visit}/>
               );
             } else {
-              return <div></div>
+              return <tr />
             }
           })
         }
